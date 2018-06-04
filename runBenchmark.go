@@ -5,9 +5,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/lambda"
 	"strings"
-	"fmt"
 	"sort"
 	"os"
+	"fmt"
 )
 
 var lambdaClient *lambda.Lambda
@@ -58,6 +58,7 @@ func main() {
 
 	resultFile.WriteString("\r\n")
 
+	fmt.Println("AWS Lambda Benchmark")
 	for i := 0; i < 1; i++ {
 		runBenchRound(resultFile, functionsToBench)
 	}
@@ -67,7 +68,6 @@ func main() {
 func runBenchRound(resultFile *os.File, functions []*lambda.FunctionConfiguration) {
 
 	for _, function := range functions {
-		fmt.Println(*function.FunctionName)
 
 		req, out := lambdaClient.InvokeRequest(&lambda.InvokeInput{
 			FunctionName: function.FunctionName,
@@ -79,6 +79,8 @@ func runBenchRound(resultFile *os.File, functions []*lambda.FunctionConfiguratio
 			panic(err)
 		}
 
+		executionTime := out.Payload
+		fmt.Println(*function.FunctionName + " : " + strings.Trim(string(executionTime), "\"") + "ms")
 
 		resultFile.Write(out.Payload)
 		resultFile.WriteString(";")
