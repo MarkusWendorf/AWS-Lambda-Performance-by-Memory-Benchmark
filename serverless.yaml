@@ -1,0 +1,70 @@
+service: LambdaPerformance
+
+provider:
+  name: aws
+  runtime: go1.x 
+  region: eu-central-1
+  role: arn:aws:iam::420912396104:role/LambdaDefault
+  timeout: 15
+  memorySize: 128
+
+package:
+  individually: true
+
+
+functions:
+  Golang-0128:
+    handler: main
+    runtime: go1.x
+    memorySize: 128
+
+    package:
+      artifact: measurePerformance/main.zip
+
+  Golang-0256:
+    handler: main
+    runtime: go1.x
+    memorySize: 256
+
+    package:
+      artifact: measurePerformance/main.zip
+
+  Golang-0512:
+    handler: main
+    runtime: go1.x
+    memorySize: 512
+
+    package:
+      artifact: measurePerformance/main.zip
+
+  Golang-1024:
+    handler: main
+    runtime: go1.x
+    memorySize: 1024
+
+    package:
+      artifact: measurePerformance/main.zip
+
+  Golang-1536:
+    handler: main
+    runtime: go1.x
+    memorySize: 1536
+
+    package:
+      artifact: measurePerformance/main.zip
+
+  Golang-2048:
+    handler: main
+    runtime: go1.x
+    memorySize: 2048
+
+    package:
+      artifact: measurePerformance/main.zip
+
+  Golang-3008:
+    handler: main
+    runtime: go1.x
+    memorySize: 3008
+
+    package:
+      artifact: measurePerformance/main.zip
