@@ -24,23 +24,18 @@ func main() {
 	))
 
 	lambdaClient = lambda.New(sess)
-	allFunctions := make([]*lambda.FunctionConfiguration, 0)
+	functionsToBench := make([]*lambda.FunctionConfiguration, 0)
 
 	lambdaClient.ListFunctionsPages(&lambda.ListFunctionsInput{}, func(out *lambda.ListFunctionsOutput, isLast bool) bool {
 
 		for _, f := range out.Functions {
-			allFunctions = append(allFunctions, f)
+			if strings.HasPrefix(*f.FunctionName, "LambdaPerformance") {
+				functionsToBench = append(functionsToBench, f)
+			}
 		}
 
 		return true
 	})
-
-	functionsToBench := make([]*lambda.FunctionConfiguration, 0)
-	for _, val := range allFunctions {
-		if strings.HasPrefix(*val.FunctionName, "LambdaPerformance") {
-			functionsToBench = append(functionsToBench, val)
-		}
-	}
 
 	if len(functionsToBench) == 0 {
 		panic("found 0 lambda functions to benchmark")
